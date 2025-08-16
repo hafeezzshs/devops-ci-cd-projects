@@ -40,6 +40,10 @@ As shared libraries are divided into 3 topics:
 
 ≫ Inside the groovy file, there is a function `call()` , which is called  by the pipelines and it is a fixed syntax for all the shared libraries in the pipelines scripts.
 
+### Note:
+
+⪢ Make sure `vars/` folder is present in immediate inside repo, not in any sub-folders.
+
 Example: `helloWorld.groovy`
     
 ```groovy
