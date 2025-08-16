@@ -1,0 +1,50 @@
+pipeline {
+    agent any   // Run on any available Jenkins agent
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Cloning repository..."
+                git branch: 'main', url: 'https://github.com/hafeezzshs/devops-ci-cd-projects.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Running build..."
+                sh 'echo "Compiling project..."'
+                sh 'mkdir -p build && echo "Hello Jenkins Build" > build/output.txt'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+                sh '''
+                    if grep -q "Hello Jenkins" build/output.txt; then
+                        echo "✅ Test Passed!"
+                    else
+                        echo "❌ Test Failed!"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                echo "Archiving artifacts..."
+                archiveArtifacts artifacts: 'build/output.txt', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline finished successfully 🚀"
+        }
+        failure {
+            echo "Pipeline failed ❌"
+        }
+    }
+}
